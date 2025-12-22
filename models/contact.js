@@ -1,22 +1,29 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
-const contactSchema = new mongoose.Schema(
+const userSchema = mongoose.Schema(
     {
-        name: {
-            type: String,
-            required: true,
-        },
         email: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
         },
-        phone: {
+        password: {
             type: String,
-        }
+            required: true,
+        },
     },
     { timestamps: true }
 );
 
-module.exports = mongoose.model("Contact", contactSchema);
-        
+// Pre-save hook to hash password
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
+
+module.exports = mongoose.model("User", userSchema);
