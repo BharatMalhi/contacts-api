@@ -24,37 +24,38 @@
 // const router = express.Router();
 // const controller = require("../contactsController/contactsController");
 // const validate = require("../middleware/validate");
-// const { createContactSchema, updateContactSchema } = require("../validators/contactValidator");
+// const { createUserSchema, updateUserSchema } = require("../validators/contactValidator");
 
-// router.post("/", validate(createContactSchema),controller.createContact);
-// router.get("/", controller.getContacts);
-// router.get("/:id", controller.getContactById);
-// router.put("/:id",validate(updateContactSchema),controller.updateContact);
-// router.delete("/:id", controller.deleteContact);
+// router.post("/", validate(createUserSchema),controller.createUser);
+// router.get("/", controller.getUsers);
+// router.get("/:id", controller.getUserById);
+// router.put("/:id",validate(updateUserSchema),controller.updateUser);
+// router.delete("/:id", controller.deleteUser);
 
 // module.exports = router;
 const express = require("express");
 const router = express.Router();
+const { protect } = require("../middleware/authMiddleware");
 
 const {
-  getContacts,
-  getContactById,
-  createContact,
-  updateContact,
-  deleteContact
-} = require("../controllers/contactController");
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser
+} = require("../controller/contactsController");
 
 // /api/contacts
 router
-  .route("/")
-  .get(getContacts)
-  .post(createContact);
+  .route("/",protect)
+  .get(getUsers)
+  .post(createUser);
 
 // /api/contacts/:id
 router
   .route("/:id")
-  .get(getContactById)
-  .put(updateContact)
-  .delete(deleteContact);
+  .get(getUserById)
+  .put(updateUser)
+  .delete(deleteUser);
 
 module.exports = router;

@@ -1,22 +1,8 @@
-// const express = require('express');
-// require('dotenv').config();
-// // Database connection
-// const connectDB = require("./config/db");
-// connectDB(); // Connect to MongoDB
-// const app = express();
-// const port = process.env.PORT || 3000;
-// app.use(express.json());
-
-// const contactsRouter = require('./routes/contactsRouts');
-// app.use(contactsRouter);
-
-// app.listen(port, () => {
-//     console.log(`express is running on  port  ${port}`);
-// })
 const express = require("express");
 const connectDB = require("./config/db");
-const contactRoutes = require("./routes/contactsRouts");
+const contactRoutes = require("./routes/contactsRoutes");
 const authRoutes = require("./routes/authRoutes");
+const pageRoutes = require("./routes/paginationRoutes");
 
 require("dotenv").config();
 
@@ -31,11 +17,12 @@ app.use(express.json());
 
 // Routes
 app.use("/api/contacts", contactRoutes);
-app.use("/api/auth",authRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/pagination", pageRoutes);
 
 // Test route
 app.get("/", (req, res) => {
-    res.send("Server is running!");
+  res.send("Server is running!");
 });
 
 // Global error handling (optional for production) Log errors
@@ -46,8 +33,6 @@ app.get("/", (req, res) => {
 
 // Production-ready error handling
 
-
-
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
